@@ -1,4 +1,5 @@
 import { AuthMessage } from "./auth.message.js";
+import { NODE_ENV } from "../../common/env.enum.js";
 
 import authService from "./auth.service.js";
 import autoBind from "auto-bind";
@@ -24,7 +25,13 @@ class AuthController {
     try {
       const { mobile, code } = req.body;
       const token = await this.#service.checkOTP(mobile, code);
-      return res.json({ message: AuthMessage.LoginSuccessfully, token });
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === NODE_ENV.Production,
+        })
+        .status(200)
+        .json({ message: AuthMessage.LoginSuccessfully });
     } catch (error) {
       next(error);
     }
