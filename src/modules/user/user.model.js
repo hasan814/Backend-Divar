@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 
 const OTPSchema = new Schema({
   code: { type: String, required: false },
