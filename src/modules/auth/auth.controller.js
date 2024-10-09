@@ -38,6 +38,10 @@ class AuthController {
   }
   async logout(req, res, next) {
     try {
+      return res
+        .clearCookie("access_token")
+        .status(200)
+        .json({ message: AuthMessage.LogoutSuccessfully });
     } catch (error) {
       next(error);
     }

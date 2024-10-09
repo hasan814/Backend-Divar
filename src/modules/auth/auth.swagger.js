@@ -69,3 +69,16 @@
  *          200:
  *            description: success
  */
+
+/**
+ * @swagger
+ *
+ * /auth/logout:
+ *  get:
+ *      summary: Logout User
+ *      tags:
+ *          -   Auth
+ *      responses:
+ *          200:
+ *            description: success
+ */
