@@ -4,6 +4,7 @@ import { randomInt } from "crypto";
 import createHttpError from "http-errors";
 import UserModel from "../user/user.model.js";
 import autoBind from "auto-bind";
+import jwt from "jsonwebtoken";
 
 class AuthService {
   #model;
@@ -35,16 +36,19 @@ class AuthService {
       throw new createHttpError.Unauthorized(AuthMessage.OtpCodeExpired);
     if (user?.otp?.code !== code)
       throw new createHttpError.Unauthorized(AuthMessage.OtpCodeIsIncorrect);
-    if (!user.verifiedMobile) {
-      user.verifiedMobile = true;
-      await user.save();
-    }
-    return user;
+    if (!user.verifiedMobile) user.verifiedMobile = true;
+    const accessToken = this.signToken({ mobile, id: user._id });
+    user.accessToken = accessToken;
+    await user.save();
+    return accessToken;
   }
   async checkExistByMobile(mobile) {
     const user = await this.#model.findOne({ mobile });
     if (!user) throw new createHttpError.NotFound(AuthMessage.NotFound);
     return user;
+  }
+  signToken(payload) {
+    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1y" });
   }
 }
 
