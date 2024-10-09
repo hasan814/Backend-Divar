@@ -1,22 +1,24 @@
-import { AuthMessage } from "./auth.message";
+import { AuthMessage } from "./auth.message.js";
 
-import authService from "./auth.service";
+import authService from "./auth.service.js";
 import autoBind from "auto-bind";
 
 class AuthController {
   #service;
   constructor() {
-    autoBind();
+    autoBind(this);
     this.#service = authService;
   }
   async sendOTP(req, res, next) {
     try {
       const { mobile } = req.body;
       await this.#service.sendOTP(mobile);
-      return {
+      return res.status(200).json({
         message: AuthMessage.SendOtpSuccessfully,
-      };
-    } catch (error) {}
+      });
+    } catch (error) {
+      next(error);
+    }
   }
   async checkOTP(req, res, next) {
     try {

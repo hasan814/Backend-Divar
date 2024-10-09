@@ -4,13 +4,14 @@ import swaggerJSDoc from "swagger-jsdoc";
 function SwaggerConfig(app) {
   const swaggerDocument = swaggerJSDoc({
     swaggerDefinition: {
+      openapi: "3.0.1",
       info: {
         title: "divar-backend",
-        description: "modejs",
+        description: "nodejs",
         version: "1.0.0",
       },
     },
-    apis: [],
+    apis: [process.cwd() + "/src/modules/**/*.swagger.js"],
   });
 
   const swagger = swaggerUi.setup(swaggerDocument, {});

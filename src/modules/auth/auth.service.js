@@ -1,8 +1,9 @@
-import { AuthMessage } from "./auth.message";
+import { AuthMessage } from "./auth.message.js";
 import { randomInt } from "crypto";
 
 import createHttpError from "http-errors";
 import autoBind from "auto-bind";
+import UserModel from "../user/user.model.js";
 
 class AuthService {
   #model;
