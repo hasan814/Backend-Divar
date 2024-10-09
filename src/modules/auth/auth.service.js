@@ -2,8 +2,8 @@ import { AuthMessage } from "./auth.message.js";
 import { randomInt } from "crypto";
 
 import createHttpError from "http-errors";
-import autoBind from "auto-bind";
 import UserModel from "../user/user.model.js";
+import autoBind from "auto-bind";
 
 class AuthService {
   #model;
@@ -28,7 +28,19 @@ class AuthService {
     await user.save();
     return user;
   }
-  async checkOTP(mobile, code) {}
+  async checkOTP(mobile, code) {
+    const user = await this.checkExistByMobile(mobile);
+    const now = new Date().getTime();
+    if (user?.otp?.expiresIn < now)
+      throw new createHttpError.Unauthorized(AuthMessage.OtpCodeExpired);
+    if (user?.otp?.code !== code)
+      throw new createHttpError.Unauthorized(AuthMessage.OtpCodeIsIncorrect);
+    if (!user.verifiedMobile) {
+      user.verifiedMobile = true;
+      await user.save();
+    }
+    return user;
+  }
   async checkExistByMobile(mobile) {
     const user = await this.#model.findOne({ mobile });
     if (!user) throw new createHttpError.NotFound(AuthMessage.NotFound);

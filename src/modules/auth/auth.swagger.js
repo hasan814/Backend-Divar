@@ -1,59 +1,71 @@
 /**
  * @swagger
- * tags:
+ *  tags:
  *   name: Auth
  *   description: Auth Module and Routes
  */
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     SendOTP:
- *       type: object
- *       required:
- *         - mobile
- *       properties:
- *         mobile:
- *           type: string
- *           description: The user's mobile number to receive the OTP
+ *  components:
+ *      schemas:
+ *          SendOTP:
+ *              type: object
+ *              required:
+ *                  -   mobile
+ *              properties:
+ *                  mobile:
+ *                      type: string
+ *          CheckOTP:
+ *              type: object
+ *              required:
+ *                  -   mobile
+ *                  -   code
+ *              properties:
+ *                  mobile:
+ *                      type: string
+ *                  code:
+ *                      type: string
  */
 
 /**
  * @swagger
  *
  * /auth/send-otp:
- *   post:
- *     summary: Login with OTP via this endpoint
- *     tags:
- *       - Auth
- *     requestBody:
- *       content:
- *         application/x-www-form-urlencoded:
- *           schema:
- *             $ref: "#/components/schemas/SendOTP"
- *         application/json:
- *           schema:
- *             $ref: "#/components/schemas/SendOTP"
- *     responses:
- *       200:
- *         description: OTP sent successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: sent otp successfully
- *       400:
- *         description: Invalid request or OTP already sent
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: OTP code expired or invalid mobile number
+ *  post:
+ *      summary: login with OTP in this end-point
+ *      tags:
+ *          -   Auth
+ *      requestBody:
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      $ref: "#/components/schemas/SendOTP"
+ *              application/json:
+ *                  schema:
+ *                      $ref: "#/components/schemas/SendOTP"
+ *      responses:
+ *          200:
+ *            description: success
+ */
+
+/**
+ * @swagger
+ *
+ * /auth/check-otp:
+ *  post:
+ *      summary: check otp for login user
+ *      tags:
+ *          -   Auth
+ *      requestBody:
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      $ref: "#/components/schemas/CheckOTP"
+ *              application/json:
+ *                  schema:
+ *                      $ref: "#/components/schemas/CheckOTP"
+ *      responses:
+ *          200:
+ *            description: success
  */
