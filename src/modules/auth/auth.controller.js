@@ -1,5 +1,5 @@
 import { AuthMessage } from "./auth.message.js";
-import { NODE_ENV } from "../../common/env.enum.js";
+import { NodeEnv } from "../../common/env.enum.js";
 
 import authService from "./auth.service.js";
 import autoBind from "auto-bind";
@@ -28,7 +28,7 @@ class AuthController {
       res
         .cookie("access_token", token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === NODE_ENV.Production,
+          secure: process.env.NODE_ENV === NodeEnv.Production,
         })
         .status(200)
         .json({ message: AuthMessage.LoginSuccessfully });

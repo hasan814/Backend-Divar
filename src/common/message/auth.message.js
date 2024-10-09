@@ -1,4 +1,4 @@
-export const AuthorizationMessage = Object.freese({
+export const AuthorizationMessage = Object.freeze({
   login: "login on your account",
   InvalidToken: "Token is Invalid",
   loginAgain: "Please Login Again",
